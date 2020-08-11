@@ -5,19 +5,13 @@ class dl_uploadgig_com extends Download
 
     public function CheckAcc($cookie)
     {
-        $data = $this->lib->curl("https://uploadgig.com/user/my_account", "{$cookie}", "");
-        if (stristr($data, '<dt>Premium download:</dt>') && stristr($data, '<dd class="text-success">Active</dd>')) {
-            return array(true, "Until " . strip_tags($this->lib->cut_str($data, '<dt>Package expire date:</dt>', '<span')) . "<br/>Bandwidth Left: " . strip_tags($this->lib->cut_str($data, '<dt>Daily traffic usage:</dt>', '<span')));
-        } elseif (stristr($data, '<dt>Premium download:</dt>')) {
-            return array(false, "accfree");
-        } else {
-            return array(false, "accinvalid");
-        }
-
-    }
-
+		$data = $this->lib->curl("https://uploadgig.com/user/my_account", $cookie, "");
+		if (stristr($data, 'P')) return array(true, "Premium Until: ".$this->lib->cut_str($data, "Package expire date:","Renew"));
+			else return array(true, "accfree");
+	}
+	
     public function Login($user, $pass)
-    {
+       {
         $data = $this->lib->curl("https://uploadgig.com/login/form", "", "");
         $cook = $this->lib->GetCookies($data);
         if (preg_match('/<input type="hidden" name="csrf_tester" value="(.*?)"/', $data, $match)) {
@@ -30,29 +24,31 @@ class dl_uploadgig_com extends Download
         }
         $cookie = preg_replace('/(firewall=.*?; )/', '', $this->lib->GetCookies($data));
 
-        return array(true, $cookie);
+        return $cookie;
     }
 
     public function Leech($url)
     {
         $data = $this->lib->curl($url, $this->lib->cookie, "");
         if (stristr($data, '<h2>File not found</h2>')) {
-            $this->error("dead", true, false, 2);
-        } elseif (stristr($data, 'bandwidth')) {
-            $this->error("LimitAcc");
-        } elseif ($this->isRedirect($data)) {
-            return trim($this->redirect);
-        }
+            $this->error("LienDead", true, false, 2);
+        } 
+	    $data = str_replace("/g/", "/go/", $data);
+	          if (!preg_match('@https?:\/\/\w+\.uploadgig\.com\/[^"\'><\r\n\t]+@i', $data, $dl))				  
+		$this->error("notfound", true, false, 2);  
+		else  	
+		return trim($dl[0]);
+		return false;	 
 
-        return false;
     }
 
 }
 
 /*
- * Open Source Project
- * New Vinaget by LTT
- * Version: 3.3 LTS
- * Uploadgig.com Download Plugin
- * Date: 25.11.2017
- */
+* Open Source Project
+* Vinaget by ..::[H]::..
+* Version: 2.7.0
+* Download Plugin by vng01 [12.8.2020]
+* Downloader Class By [FZ]
+*/
+?>
