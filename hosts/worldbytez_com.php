@@ -43,6 +43,6 @@ class dl_worldbytez_com extends Download
 * Open Source Project
 * Vinaget by ..::[H]::..
 * Version: 2.7.0
-* sendspace.com Download Plugin by vng01 [12.8.2020]
+* Download Plugin by vng01 [12.8.2020]
 * Downloader Class By [FZ]
 ?>
