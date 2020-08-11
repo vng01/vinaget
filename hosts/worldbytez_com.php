@@ -5,70 +5,44 @@ class dl_worldbytez_com extends Download
 
     public function CheckAcc($cookie)
     {
-        $data = $this->lib->curl("https://worldbytez.com/?op=my_account", $cookie, "");
-        if (stristr($data, 'Premium account expire')) {
-            return array(true, "Until " . $this->lib->cut_str($data, '<span class="label label-success">', '</span>'));
-        } else if (stristr($data, '<div class="UserHead">')) {
-            return array(false, "accfree");
-        } else {
-            return array(false, "accinvalid");
-        }
-    }
+
+		$data = $this->lib->curl("https://worldbytez.com/?op=my_account", $cookie, "");		
+		if (stristr($data, 'logout')) {
+			$expire  = trim($this->lib->cut_str($data,'<span class="label label-success">','<'));			
+			return [true, "Expire le: {$expire}"];
+		}	
+			else return array(true, "accfree");
+	}
+	
 
     public function Login($user, $pass)
     {
-        $data = $this->lib->curl("https://worldbytez.com/login.html", "", "", 0);
-        $cook = $this->lib->GetCookies($data);
-        $post = $this->parseForm($this->lib->cut_str($data, 'name="FL">', '</form>'));
-        $post['login'] = $user;
-        $post['password'] = $pass;
-        $data = $this->lib->curl("https://worldbytez.com/", $cook, $post);
+        $page = $this->lib->curl("https://worldbytez.com/?op=login", "", "");
+		$cook = $this->lib->cut_str($page, 'name="token" value="', '"');
+		$data = $this->lib->curl("https://worldbytez.com/", $this->lib->GetCookies($page), "op=login&token={$cook}&login={$user}&password={$pass}");
         $cookie = $this->lib->GetCookies($data);
-        return array(true, $cookie);
+        return array(true, $cookie);		
+		
     }
 
     public function Leech($url)
-    {
-        list($url, $pass) = $this->linkpassword($url);
-        $data = $this->lib->curl($url, $this->lib->cookie, "");
-        if ($this->isRedirect($data) && stristr($this->redirect, "/download")) {
-            $cook = $this->lib->GetCookies($data);
-            $data = $this->lib->curl($this->redirect, "{$cook}{$this->lib->cookie}", "");
-        }
-
-        if ($pass) {
-            $post = $this->parseForm($this->lib->cut_str($data, '<Form name="F1"', '</Form>'));
-            $post["password"] = $pass;
-            $data = $this->lib->curl($url, $this->lib->cookie, $post);
-            if (stristr($data, 'Wrong password')) {
-                $this->error("wrongpass", true, false, 2);
-            } elseif (preg_match('/<a href="(.*?)" class="bbc_url"/', $data, $match)) {
-                return trim($match[1]);
-            }
-        }
-
-        if (stristr($data, 'type="password" name="password')) {
-            $this->error("reportpass", true, false);
-        } elseif (stristr($data, '<h2>Oops File Not Found</h2>') || stristr($data, '<b>File Not Found</b>')) {
-            $this->error("dead", true, false, 2);
-        } elseif ($this->isRedirect($data)) {
-            return $this->redirect;
-        } else {
-            $post = $this->parseForm($this->lib->cut_str($data, '<Form name="F1"', '</Form>'));
-            $data = $this->lib->curl($url, $this->lib->cookie, $post);
-            if (preg_match('/<a href="(.*?)" class="bbc_url"/', $data, $match)) {
-                return trim($match[1]);
-            }
-        }
-
-        return false;
+    {		
+		 list($url, $pass) = $this->linkpassword($url);
+	  $id = $this->lib->cut_str($url, '/worldbytez.com/','/');
+      $data1 = $this->lib->curl("https://worldbytez.com/download", $this->lib->cookie,"op=download2&id={$id}&rand=&referer=&method_free=&method_premium=1&adblock_detected=1", 0);	  
+        if (!preg_match('@http?:\/\/\w+\.worldbytez\.com:182\/[^"\'><\r\n\t]+@i', $data1, $dl)) 
+		$this->error("notfound", true, false, 2);  
+		else  
+		return trim($dl[0]);
+		return false;	
     }
+
 }
 
 /*
- * Open Source Project
- * New Vinaget by LTT
- * Version: 3.3 LTS
- * Worldbytez_com Download Plugin
- * Date: 30.05.2020
- */
+* Open Source Project
+* Vinaget by ..::[H]::..
+* Version: 2.7.0
+* sendspace.com Download Plugin by vng01 [12.8.2020]
+* Downloader Class By [FZ]
+?>
