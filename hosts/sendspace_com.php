@@ -38,7 +38,7 @@ class dl_sendspace_com extends Download {
 * Open Source Project
 * Vinaget by ..::[H]::..
 * Version: 2.7.0
-* sendspace.com Download Plugin by giaythuytinh176 [17.8.2013]
+* sendspace.com Download Plugin by vng01 [12.8.2020]
 * Downloader Class By [FZ]
 */
 ?>
