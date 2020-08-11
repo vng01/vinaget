@@ -21,7 +21,7 @@ class dl_cloudghost_net extends Download {
    public function Leech($url)
     {
         list($url, $pass) = $this->linkpassword($url);
-       echo $data = $this->lib->curl($url, $this->lib->cookie, "");
+            $data = $this->lib->curl($url, $this->lib->cookie, "");
         if ($this->isRedirect($data) && stristr($this->redirect, "/download")) {
             $cook = $this->lib->GetCookies($data);
             $data = $this->lib->curl($this->redirect, "{$cook}{$this->lib->cookie}", "");
