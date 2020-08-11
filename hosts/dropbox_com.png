@@ -1,0 +1,30 @@
+<?php
+
+class dl_dropbox_com extends Download
+{
+
+    public function FreeLeech($url)
+    {
+        $data = $this->lib->curl($url, "", "");
+        $this->save($this->lib->GetCookies($data));
+        $id=$this->lib->cut_str($data,'Set-Cookie: t=',';');
+		$post=$this->lib->curl("https://www.dropbox.com/sharing/fetch_user_content_link", $this->lib->cookie, "is_xhr=true&t=$id&url=$url");		 
+		$cap=$this->lib->cut_str($post,'includeSubDomains','');
+		 	return trim($cap);
+
+        return false;
+    }
+
+}
+
+
+/*
+* Open Source Project
+* Vinaget by ..::[H]::..
+* Version: 2.7.0
+* Download Plugin by vng01 [12.8.2020]
+* Downloader Class By [FZ]
+*/
+
+
+?>
