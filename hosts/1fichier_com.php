@@ -10,7 +10,6 @@ class dl_1fichier_com extends Download
         } elseif (stristr($data, ">Identification")) {
             return array(false, "accinvalid");
         }
-
         return array(false, "accfree");
     }
 
