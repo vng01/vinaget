@@ -163,7 +163,7 @@
 								<?php if($obj->isAdmin()){
 									$obj->last_version = $obj->getversion();
 									if($obj->last_version > $obj->ltt_version) {
-										echo '<br><font color="#dbac58"><b>'.sprintf($obj->lang['update1']).'</b> - <a href="https://github.com/ltt2801/new-vinaget-script/archive/v'.$obj->last_version.'.zip">'.sprintf($obj->lang['update2'],$obj->last_version).'</a></font> - <a href="https://raw.githubusercontent.com/vng01/vinaget/master/changelog.txt">changelog</a><br>';
+										echo '<br><font color="#dbac58"><b>'.sprintf($obj->lang['update1']).'</b> - <a href="https://github.com/vng01/vinaget/archive/v'.$obj->last_version.'.zip">'.sprintf($obj->lang['update2'],$obj->last_version).'</a></font> - <a href="https://raw.githubusercontent.com/vng01/vinaget/master/changelog.txt">changelog</a><br>';
 									}
 								}
 								?>
