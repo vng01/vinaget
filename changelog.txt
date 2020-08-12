@@ -1,3 +1,7 @@
+V35:
+- Mineur
+V34:
+- Mise à jour plugin + ajout
 v33:
 - Add worldbytez.com
 - Minor fix class.php
