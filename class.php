@@ -170,7 +170,7 @@ class getinfo extends Tools_get
 
     public function getversion()
     {
-        $version = $this->curl("https://raw.githubusercontent.com/ltt2801/new-vinaget-script/master/version.txt", "", "", 0);
+        $version = $this->curl("https://raw.githubusercontent.com/vng01/vinaget/master/version.txt", "", "", 0);
         return intval($version);
     }
 
